@@ -1,0 +1,10 @@
+name: SpawnControl
+version: 1.0
+author: Morthis
+description: Spawn control plugin
+main: com.noheroes.spawncontrol.SpawnControl
+commands:
+  spawncontrol:
+    description: Spawn control commands
+    aliases: [sc]
+    usage: Type /sc help for more information

@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.noheroes</groupId>
+  <artifactId>SpawnControl</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>SpawnControl</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <repositories>
+        <repository>
+            <id>bukkit-repo</id>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>spout-repo</id>
+            <url>http://repo.getspout.org</url>
+        </repository>
+  </repositories>
+  <dependencies>
+      <dependency>
+            <!-- Grabs from Bukkit Artifactory -->
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.2.5-R4.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+  </dependencies>
+</project>
