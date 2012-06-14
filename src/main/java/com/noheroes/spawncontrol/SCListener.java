@@ -44,6 +44,9 @@ public class SCListener implements Listener {
             }
             boolean accepted = scm.offerMonster((Monster)event.getEntity(), event.getLocation());
             if (!accepted) {
+                if (Properties.debugSpam) {
+                    sc.log("Prevented spawn because no player could be linked");
+                }
                 event.setCancelled(true);
             }
         }

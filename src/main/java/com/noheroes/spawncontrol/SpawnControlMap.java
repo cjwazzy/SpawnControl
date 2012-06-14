@@ -123,15 +123,16 @@ public class SpawnControlMap {
     
     public void cleanUp() {
         if (Properties.debugSpam) {
-            sc.log("Cleanup running");
+            //sc.log("Cleanup running");
         }
+        Integer counter = 0;
         for (Monster mob : mobToPlayer.keySet()) {
             String pname = mobToPlayer.get(mob);
             if (mob.isDead()) {
                 playerToMob.get(pname).remove(mob);
                 mobToPlayer.remove(mob);
                 if (Properties.debugSpam) {
-                    sc.log("Cleanup thread found dead mob, removing mappings...");
+                    counter++;
                 }
             }
             else {
@@ -154,6 +155,9 @@ public class SpawnControlMap {
                     }
                 }
             }
+        }
+        if (counter != 0) {
+            sc.log("Cleanup thread removed " + counter + " mobs from mappings");
         }
     }
     
