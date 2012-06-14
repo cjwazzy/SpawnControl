@@ -40,7 +40,7 @@ public class SpawnControlMap {
         Set<Player> playersInRange = new HashSet<Player>();
         // Loop through each player and check range
         for (Player player : playerList) {
-            if ((player.getLocation().distance(spawnLoc) <= Properties.maxLinkRange) && !(player.getName().equals(pname))) {
+            if ((player.getLocation().distance(spawnLoc) <= Properties.maxLinkRange) && !(player.getName().toLowerCase().equals(pname))) {
                 playersInRange.add(player);
             }
         }
@@ -64,7 +64,7 @@ public class SpawnControlMap {
     
     // Attempts to link monster to player, returns true if accepted, false if player is capped
     public boolean linkMonster(Monster mob, Player player) {
-        String pname = player.getName();
+        String pname = player.getName().toLowerCase();
         if (!playerToMob.containsKey(pname)) {
             Set<Monster> mobSet = new HashSet<Monster>();
             mobSet.add(mob);
@@ -96,7 +96,7 @@ public class SpawnControlMap {
     }
     
     public void playerQuit(Player player) {
-        String pname = player.getName();
+        String pname = player.getName().toLowerCase();
         if (!playerToMob.containsKey(pname)) {
             return;
         }
@@ -108,7 +108,7 @@ public class SpawnControlMap {
                 // Remove link to current player and attempt to link to a new one or despawn otherwise
                 mobToPlayer.remove(mob);
                 if (!mob.isDead()) {
-                    accepted = this.offerMonster(mob, mob.getLocation(), player.getName());
+                    accepted = this.offerMonster(mob, mob.getLocation(), pname);
                     if (!accepted) {
                         mob.remove();
                         if (Properties.debugSpam) {
@@ -145,7 +145,7 @@ public class SpawnControlMap {
                 if (!(player.getLocation().getWorld().equals(mob.getLocation().getWorld())) || 
                         (player.getLocation().distance(mob.getLocation()) > Properties.maxLinkRange)) {
                     mobToPlayer.remove(mob);
-                    playerToMob.get(player.getName()).remove(mob);
+                    playerToMob.get(pname).remove(mob);
                     boolean accepted = this.offerMonster(mob, mob.getLocation());
                     if (!accepted) {
                         if (Properties.debugSpam) {
@@ -161,7 +161,8 @@ public class SpawnControlMap {
         }
     }
     
-    public String mobInfo(String pname) {
+    public String mobInfo(String name) {
+        String pname = name.toLowerCase();
         Integer mobNr;
         if (playerToMob.containsKey(pname)) {
             mobNr = playerToMob.get(pname).size();
@@ -172,7 +173,8 @@ public class SpawnControlMap {
         return "Player " + pname + " has " + mobNr + "/" + Properties.maxMobsPerPlayer + " mobs spawned";
     }
     
-    public String detailedInfo(String pname) {
+    public String detailedInfo(String name) {
+        String pname = name.toLowerCase();
         if (!playerToMob.containsKey(pname)) {
             return "No mobs spawned";
         }
@@ -195,7 +197,8 @@ public class SpawnControlMap {
         return msg;
     }
     
-    public void dumpPlayerLog(String pname) {
+    public void dumpPlayerLog(String name) {
+        String pname = name.toLowerCase();
         if (!(playerToMob.containsKey(pname))) {
             sc.log("Player " + pname + " has no mobs");
         }
