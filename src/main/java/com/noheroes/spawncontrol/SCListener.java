@@ -80,6 +80,6 @@ public class SCListener implements Listener {
     
     private boolean isMob(EntityType et) {
         return (et.equals(EntityType.CREEPER) || (et.equals(EntityType.SKELETON)) || (et.equals(EntityType.ENDERMAN)) || 
-                et.equals(EntityType.SPIDER) || et.equals(EntityType.ZOMBIE));
+                et.equals(EntityType.SPIDER) || et.equals(EntityType.ZOMBIE) || et.equals(EntityType.PIG_ZOMBIE) || et.equals(EntityType.SLIME));
     }
 }
