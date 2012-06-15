@@ -6,6 +6,7 @@ package com.noheroes.spawncontrol;
 
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,7 +43,7 @@ public class SCListener implements Listener {
             if (event.getEntity().isDead()) {
                 return;
             }
-            boolean accepted = scm.offerMonster((Monster)event.getEntity(), event.getLocation());
+            boolean accepted = scm.offerMonster((LivingEntity)event.getEntity(), event.getLocation());
             if (!accepted) {
                 if (Properties.debugSpam) {
                     sc.log("Prevented spawn because no player could be linked");
@@ -56,7 +57,7 @@ public class SCListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         EntityType et = event.getEntityType();
         if (this.isMob(et)) {
-            scm.removeMonster((Monster)event.getEntity());
+            scm.removeMonster((LivingEntity)event.getEntity());
         }
     }
     
@@ -64,7 +65,7 @@ public class SCListener implements Listener {
     public void onEntityExplode(EntityExplodeEvent event) {
         EntityType et = event.getEntityType();
         if (this.isMob(et)) {
-            scm.removeMonster((Monster)event.getEntity());
+            scm.removeMonster((LivingEntity)event.getEntity());
         }        
     }
     

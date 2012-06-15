@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Monster;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 /**
@@ -21,16 +21,16 @@ import org.bukkit.entity.Player;
  */
 public class SpawnControlMap {
     
-    private final ConcurrentHashMap<String, Set<Monster>> playerToMob = new ConcurrentHashMap<String, Set<Monster>>();
-    private final ConcurrentHashMap<Monster, String> mobToPlayer = new ConcurrentHashMap<Monster, String>();
+    private final ConcurrentHashMap<String, Set<LivingEntity>> playerToMob = new ConcurrentHashMap<String, Set<LivingEntity>>();
+    private final ConcurrentHashMap<LivingEntity, String> mobToPlayer = new ConcurrentHashMap<LivingEntity, String>();
     private SpawnControl sc;
     
     public SpawnControlMap(SpawnControl sc) {
         this.sc = sc;
     }
     
-    // Offers monster to map, returns true if accepted and linked to player, false if no link can be made and ignores players with name pname
-    public boolean offerMonster(Monster mob, Location spawnLoc, String pname) {
+    // Offers LivingEntity to map, returns true if accepted and linked to player, false if no link can be made and ignores players with name pname
+    public boolean offerMonster(LivingEntity mob, Location spawnLoc, String pname) {
         if ((mob == null) || spawnLoc == null) {
             return false;
         }
@@ -57,16 +57,16 @@ public class SpawnControlMap {
         return false;        
     }
     
-    // Offers monster to map, returns true if accepted and linked to player, false if no link can be made
-    public boolean offerMonster(Monster mob, Location spawnLoc) {
+    // Offers LivingEntity to map, returns true if accepted and linked to player, false if no link can be made
+    public boolean offerMonster(LivingEntity mob, Location spawnLoc) {
         return this.offerMonster(mob, spawnLoc, null);
     }
     
-    // Attempts to link monster to player, returns true if accepted, false if player is capped
-    public boolean linkMonster(Monster mob, Player player) {
+    // Attempts to link LivingEntity to player, returns true if accepted, false if player is capped
+    public boolean linkMonster(LivingEntity mob, Player player) {
         String pname = player.getName().toLowerCase();
         if (!playerToMob.containsKey(pname)) {
-            Set<Monster> mobSet = new HashSet<Monster>();
+            Set<LivingEntity> mobSet = new HashSet<LivingEntity>();
             mobSet.add(mob);
             playerToMob.put(pname, mobSet);
             mobToPlayer.put(mob, pname);
@@ -84,7 +84,7 @@ public class SpawnControlMap {
         }
     }
     
-    public void removeMonster(Monster mob) {
+    public void removeMonster(LivingEntity mob) {
         if (!mobToPlayer.containsKey(mob)) {
             return;
         }
@@ -101,10 +101,10 @@ public class SpawnControlMap {
             return;
         }
         else {
-            // Loops through all monsters tied to player and attempt to offer them to another player
-            Set<Monster> mobList = playerToMob.get(pname);
+            // Loops through all LivingEntitys tied to player and attempt to offer them to another player
+            Set<LivingEntity> mobList = playerToMob.get(pname);
             boolean accepted;
-            for (Monster mob : mobList) {
+            for (LivingEntity mob : mobList) {
                 // Remove link to current player and attempt to link to a new one or despawn otherwise
                 mobToPlayer.remove(mob);
                 if (!mob.isDead()) {
@@ -112,7 +112,7 @@ public class SpawnControlMap {
                     if (!accepted) {
                         mob.remove();
                         if (Properties.debugSpam) {
-                            sc.log("Player " + pname + " logged off and monster could not be offered to another player, despawning...");
+                            sc.log("Player " + pname + " logged off and LivingEntity could not be offered to another player, despawning...");
                         }
                     }
                 }
@@ -126,7 +126,7 @@ public class SpawnControlMap {
             //sc.log("Cleanup running");
         }
         Integer counter = 0;
-        for (Monster mob : mobToPlayer.keySet()) {
+        for (LivingEntity mob : mobToPlayer.keySet()) {
             String pname = mobToPlayer.get(mob);
             if (mob.isDead()) {
                 playerToMob.get(pname).remove(mob);
@@ -181,9 +181,9 @@ public class SpawnControlMap {
         if (playerToMob.get(pname).isEmpty()) {
             return "No mobs spawned";
         }
-        Set<Monster> mobList = playerToMob.get(pname);
-        String msg = "Monsters:";
-        for (Monster mob : mobList) {
+        Set<LivingEntity> mobList = playerToMob.get(pname);
+        String msg = "LivingEntitys:";
+        for (LivingEntity mob : mobList) {
             msg = msg + mob.toString() + ",";
         }
         return msg;
@@ -205,7 +205,7 @@ public class SpawnControlMap {
         else {
             sc.log("Player " + pname + " " + playerToMob.get(pname).size() + "/" + Properties.maxMobsPerPlayer);
             String msg = "";
-            for (Monster mob : playerToMob.get(pname)) {
+            for (LivingEntity mob : playerToMob.get(pname)) {
                 msg = msg + "[" + mob.toString() + "@" + mob.getLocation().getBlockX() + "," + mob.getLocation().getBlockY() 
                         + "," + mob.getLocation().getBlockZ() + "," + mob.getLocation().getWorld().getName() + "],";
             }
@@ -220,7 +220,7 @@ public class SpawnControlMap {
     }
     
     public void despawnAllMobs() {
-        for (Monster mob : mobToPlayer.keySet()) {
+        for (LivingEntity mob : mobToPlayer.keySet()) {
             mob.remove();
         }
     }
