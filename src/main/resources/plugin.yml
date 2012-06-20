@@ -1,5 +1,5 @@
 name: SpawnControl
-version: 1.0
+version: 1.01
 author: Morthis
 description: Spawn control plugin
 main: com.noheroes.spawncontrol.SpawnControl
