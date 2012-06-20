@@ -4,6 +4,7 @@
  */
 package com.noheroes.spawncontrol;
 
+import java.util.LinkedList;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -61,6 +62,10 @@ public class SpawnControl extends JavaPlugin {
         Properties.maxMobsPerPlayer = config.getInt("MaxMobsPerPlayer");
         Properties.maxLinkRange = config.getInt("MaxLinkRange");
         Properties.ticksPerUpdate = config.getInt("TicksPerUpdate");
+        Properties.worldList = config.getStringList("ActiveWorlds");
+        if (Properties.worldList == null) {
+            Properties.worldList = new LinkedList<String>();
+        }
         this.saveConfig();
     }
 }
